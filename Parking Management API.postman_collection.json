@@ -1,0 +1,904 @@
+{
+	"info": {
+		"_postman_id": "1533527f-c44c-4495-916f-0d84fec56327",
+		"name": "Parking Management API",
+		"description": "API Collection for the Parking Management System for tech interview in Nelumbo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27061321"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();\r",
+									"pm.environment.set(\"token\", jsonData.token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@mail.com\",\n    \"password\": \"admin\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Login endpoint for both ADMIN and SOCIO roles. Use admin@mail.com/admin for ADMIN access, or created SOCIO accounts for SOCIO access."
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"prueba@mail.com\",\n    \"password\": \"noesadmin\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/user/registro",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"registro"
+							]
+						},
+						"description": "Login endpoint for both ADMIN and SOCIO roles. Use admin@mail.com/admin for ADMIN access, or created SOCIO accounts for SOCIO access."
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/auth/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						},
+						"description": "Logout endpoint to invalidate the current JWT token."
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication endpoints for logging in and out of the system."
+		},
+		{
+			"name": "ADMIN - User Management",
+			"item": [
+				{
+					"name": "Crear SOCIO User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"diego@mail.com\",\n    \"password\": \"password123\",\n    \"name\": \"Socio Diego\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/user/create-socio",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"create-socio"
+							]
+						},
+						"description": "Create a new SOCIO user. Only ADMIN can access this endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user"
+							]
+						},
+						"description": "Get a list of all users in the system. Only ADMIN can access this endpoint."
+					},
+					"response": []
+				}
+			],
+			"description": "User management endpoints for ADMIN role."
+		},
+		{
+			"name": "ADMIN - Parking Management",
+			"item": [
+				{
+					"name": "Crear Parking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Parking Central\",\n    \"address\": \"3454,-4545\",\n    \"capacity\": 30,\n    \"hourlyRate\": 25.25,\n    \"ownerId\": 2\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/parkings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"parkings"
+							]
+						},
+						"description": "Create a new parking and associate it with a SOCIO. Only ADMIN can access this endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Parkings",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/parkings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"parkings"
+							]
+						},
+						"description": "Get a list of all parkings in the system. Only ADMIN can access this endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar Parking by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/parkings/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"parkings",
+								"1"
+							]
+						},
+						"description": "Get details of a specific parking by its ID. Only ADMIN can access this endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Parking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Parking Name\",\n    \"address\": \"Calle 24 11\",\n    \"capacity\": 3,\n    \"hourlyRate\": 6.00,\n    \"ownerId\": 2\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/parkings/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"parkings",
+								"1"
+							]
+						},
+						"description": "Update an existing parking details. Only ADMIN can access this endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Parking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/parkings/4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"parkings",
+								"4"
+							]
+						},
+						"description": "Delete a parking by its ID. Only ADMIN can access this endpoint."
+					},
+					"response": []
+				}
+			],
+			"description": "Parking CRUD operations for ADMIN role."
+		},
+		{
+			"name": "ADMIN - Vehicle Management",
+			"item": [
+				{
+					"name": "Listar Vehicles en Parking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/parkings/1/vehicles",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"parkings",
+								"1",
+								"vehicles"
+							]
+						},
+						"description": "Get a list of vehicles currently in a specific parking. Only ADMIN can access this endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar detalles Vehiculo en Parking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/parkings/1/vehicles/4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"parkings",
+								"1",
+								"vehicles",
+								"4"
+							]
+						},
+						"description": "Get details of a specific vehicle in a parking. Only ADMIN can access this endpoint."
+					},
+					"response": []
+				}
+			],
+			"description": "Vehicle management endpoints for ADMIN role."
+		},
+		{
+			"name": "ADMIN - Email",
+			"item": [
+				{
+					"name": "Send Email to SOCIO",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"socio1@mail.com\",\n    \"placa\": \"ABC123\",\n    \"mensaje\": \"Cobrar al vehiculo con placa ABC123\",\n    \"parqueaderoId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/email/send",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"email",
+								"send"
+							]
+						},
+						"description": "Send an email to a SOCIO (simulation). Only ADMIN can access this endpoint."
+					},
+					"response": []
+				}
+			],
+			"description": "Email management endpoints for ADMIN role."
+		},
+		{
+			"name": "SOCIO - Parking Management",
+			"item": [
+				{
+					"name": "Listar Parkings asosciados",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/parkings/mine",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"parkings",
+								"mine"
+							]
+						},
+						"description": "Get a list of parkings associated with the logged-in SOCIO. Only SOCIO can access this endpoint."
+					},
+					"response": []
+				}
+			],
+			"description": "Parking management endpoints for SOCIO role."
+		},
+		{
+			"name": "SOCIO - Vehicle Management",
+			"item": [
+				{
+					"name": "Registrar Ingreso Vehicle",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"licensePlate\": \"ABC123\",\n    \"parkingId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/vehicles/entry",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vehicles",
+								"entry"
+							]
+						},
+						"description": "Register a vehicle entry to a parking. Only SOCIO can access this endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Registrar Salida Vehicle",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"licensePlate\": \"ABC123\",\n    \"parkingId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/vehicles/exit",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vehicles",
+								"exit"
+							]
+						},
+						"description": "Register a vehicle exit from a parking. Only SOCIO can access this endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar Vehiculos en mi Parking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/parkings/1/my-vehicles",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"parkings",
+								"1",
+								"my-vehicles"
+							]
+						},
+						"description": "Get a list of vehicles currently in a specific parking owned by the SOCIO. Only SOCIO can access this endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar Detalles Vehiculos in Parking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/parkings/1/my-vehicles/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"parkings",
+								"1",
+								"my-vehicles",
+								"2"
+							]
+						},
+						"description": "Get details of a specific vehicle in a parking owned by the SOCIO. Only SOCIO can access this endpoint."
+					},
+					"response": []
+				}
+			],
+			"description": "Vehicle management endpoints for SOCIO role."
+		},
+		{
+			"name": "Indicators",
+			"item": [
+				{
+					"name": "Top 3 Parkings Más Ganancias",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/indicators/top-parkings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"indicators",
+								"top-parkings"
+							]
+						},
+						"description": "Get the top 3 parkings with highest earnings in the current week. Only ADMIN can access this endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Top 3 SOCIOs Más Vehiculos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/indicators/top-owners",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"indicators",
+								"top-owners"
+							]
+						},
+						"description": "Get the top 3 SOCIOs with most vehicle entries in the current week. Only ADMIN can access this endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Top 10 Vehculos all Parkings",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/indicators/top-vehicles-all",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"indicators",
+								"top-vehicles-all"
+							]
+						},
+						"description": "Get the top 10 vehicles that have been registered most times across all parkings. Only SOCIO can access this endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Top 10 Vehicles by ParkingId",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/indicators/top-vehicles/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"indicators",
+								"top-vehicles",
+								"1"
+							]
+						},
+						"description": "Get the top 10 vehicles that have been registered most times in a specific parking owned by the SOCIO. Only SOCIO can access this endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "First Time Vehicles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/indicators/first-time-vehicles/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"indicators",
+								"first-time-vehicles",
+								"1"
+							]
+						},
+						"description": "Get vehicles that are parked for the first time in a specific parking owned by the SOCIO. Only SOCIO can access this endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Parking Ingresos (Socio)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/indicators/revenues/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"indicators",
+								"revenues",
+								"1"
+							]
+						},
+						"description": "Get earnings of a specific parking owned by the SOCIO (today, this week, this month, this year). Only SOCIO can access this endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Parking Ingreso (Socio)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/indicators/revenue/1?period=month",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"indicators",
+								"revenue",
+								"1"
+							],
+							"query": [
+								{
+									"key": "period",
+									"value": "month"
+								}
+							]
+						},
+						"description": "Get earnings of a specific parking owned by the SOCIO (today, this week, this month, this year). Only SOCIO can access this endpoint."
+					},
+					"response": []
+				}
+			],
+			"description": "Indicator endpoints for SOCIO role."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080/api",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "your_jwt_token_here",
+			"type": "string"
+		}
+	]
+}
